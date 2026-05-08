@@ -1,0 +1,13 @@
+#!/usr/bin/env buildimage
+#
+# Build using pip package "buildimage"
+#
+schemaVersion: "1.5.0"
+
+images:
+  - name: "registry.example.com/library/alertmanager-teams-forwarder"
+    directory: docker
+    tags:
+      - "tree-{{treeHash}}"
+    deployments:
+      - kustomize: "development/kustomization.yaml"

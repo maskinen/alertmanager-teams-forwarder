@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-teams-forwarder
+  namespace: development
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: alertmanager-teams-forwarder
+
+  template:
+    metadata:
+      labels:
+        app: alertmanager-teams-forwarder
+
+    spec:
+      containers:
+      - name: alertmanager-teams-forwarder
+
+        image: registry.example.com/library/alertmanager-teams-forwarder:latest
+
+        ports:
+        - containerPort: 8080
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+
+        env:
+        - name: WEBHOOK_URL
+          valueFrom:
+            secretKeyRef:
+              name: teams-webhook
+              key: webhook-url
+
+        - name: ES_HOST
+          value: "https://elasticsearch.example.internal"
+
+        - name: ES_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: alertmanager-teams-forwarder-es
+              key: api-key
+
+        - name: GRAFANA_URL
+          value: "https://grafana.example.internal"
+
+        - name: ALERTMANAGER_URL
+          value: "https://alertmanager.example.internal"

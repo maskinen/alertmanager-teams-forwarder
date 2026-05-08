@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alertmanager-teams-forwarder
+  namespace: argocd
+spec:
+  destination:
+    namespace: production
+    server: https://kubernetes.default.svc
+  project: default
+  syncPolicy:
+    automated: {}
+  source:
+    repoURL: 'ssh://git-user@gerrit.example.com:29418/kubernetes'
+    targetRevision: master
+    path: deployments/alertmanager-teams-forwarder/production

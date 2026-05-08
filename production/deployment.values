@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-teams-forwarder
+spec:
+  selector:
+    matchLabels:
+      app: alertmanager-teams-forwarder
+  template:
+    spec:
+      containers:
+        - name: alertmanager-teams-forwarder
+          env:
+            - name: WEBHOOK_URL
+              value: "https://automation.example.com/webhook"
+            - name: ALERTMANAGER_URL
+              value: "https://alertmanager.example.com"
